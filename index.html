@@ -56,9 +56,12 @@
         font-family: monospace;
       }
 
+      /* Fixed to all four edges of the layout viewport, not 100dvh: on an iPhone home-screen app 100dvh came out about
+         58 pt short of the screen (Walker's screenshot, 2026-11-08: black band under the table). */
       #app {
+        position: fixed;
+        inset: 0;
         width: 100%;
-        height: 100dvh;
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -67,6 +70,21 @@
         padding-right: env(safe-area-inset-right);
         padding-bottom: env(safe-area-inset-bottom);
         padding-left: env(safe-area-inset-left);
+      }
+
+      /* The Mac side panels (SPEC.md §9.6): off until main.ts finds a wide, tall window. The phone never shows them. */
+      #suite-left,
+      #suite-right {
+        display: none;
+        position: fixed;
+        z-index: 1;
+        pointer-events: none;
+        image-rendering: pixelated;
+        image-rendering: crisp-edges;
+      }
+      html.mac-suite,
+      html.mac-suite body {
+        background: #0f0f0f;
       }
 
       #hud-canvas,
@@ -99,13 +117,15 @@
         }
       }
     </style>
-    <script type="module" crossorigin src="/riley/assets/index-BVIs5hPG.js"></script>
+    <script type="module" crossorigin src="/riley/assets/index-BpZ24GZ-.js"></script>
   </head>
   <body style="background: #111F1B">
     <div id="app">
       <canvas id="hud-canvas"></canvas>
       <canvas id="game-canvas"></canvas>
     </div>
+    <canvas id="suite-left" aria-hidden="true"></canvas>
+    <canvas id="suite-right" aria-hidden="true"></canvas>
     <div id="rotate-notice" role="status"><p id="rotate-text"></p></div>
   </body>
 </html>
